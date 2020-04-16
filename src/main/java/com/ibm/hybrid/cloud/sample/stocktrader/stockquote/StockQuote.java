@@ -62,7 +62,8 @@ import redis.clients.jedis.JedisPool;
 
 
 @ApplicationPath("/")
-@Path("/")
+@Path("/stock-quote") 
+//@Path("/")
 @ApplicationScoped
 /** This version of StockQuote talks to API Connect (which talks to api.iextrading.com) */
 public class StockQuote extends Application {

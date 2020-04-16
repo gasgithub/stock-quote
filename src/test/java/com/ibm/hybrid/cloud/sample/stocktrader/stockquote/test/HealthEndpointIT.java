@@ -15,7 +15,7 @@
  */
 
 package com.ibm.hybrid.cloud.sample.stocktrader.stockquote.test;
-
+// #### GAS - need to change tests to quarkus
 import static org.junit.Assert.assertTrue;
 
 import javax.ws.rs.client.Client;

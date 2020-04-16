@@ -26,7 +26,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-@ApplicationPath("/")
+//@ApplicationPath("/")
 @Path("/")
 @Dependent
 @RegisterRestClient
