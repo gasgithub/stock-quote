@@ -83,6 +83,11 @@
       <version>3.1.0</version>
       <scope>compile</scope>
   </dependency>
+  <!-- Elytron Security extension -->
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-elytron-security-properties-file</artifactId>
+    </dependency>
   <!-- ### GAS  added for build , replace with quarkus tests later  -->
           <dependency>
             <groupId>junit</groupId>
@@ -90,6 +95,7 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        
   </dependencies>
   <build>
     <plugins>

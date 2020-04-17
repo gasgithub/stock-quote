@@ -48,6 +48,7 @@ import javax.ws.rs.Path;
 
 //CDI 1.2
 import javax.inject.Inject;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 
 //mpRestClient 1.0
@@ -157,7 +158,7 @@ public class StockQuote extends Application {
 			    imagePullPolicy: Always
 			*/
 
-			if (jedisPool == null) { //the pool is static; the connections within the pool are obtained as needed
+			if (jedisPool == null && System.getenv("REDIS_URL") != null) { //the pool is static; the connections within the pool are obtained as needed
 				String redis_url = System.getenv("REDIS_URL");
 				URI jedisURI = new URI(redis_url);
 				logger.info("Initializing Redis pool using URL: "+redis_url);
@@ -213,7 +214,7 @@ public class StockQuote extends Application {
 	@Path("/{symbol}")
 	@Produces("application/json")
 	@Fallback(fallbackMethod = "getStockQuoteViaIEX")
-//	@RolesAllowed({"StockTrader", "StockViewer"}) //Couldn't get this to work; had to do it through the web.xml instead :(
+	//@RolesAllowed({"StockTrader", "StockViewer"}) //Couldn't get this to work; had to do it through the web.xml instead :(
 	/**  Get stock quote from API Connect */
 	public Quote getStockQuote(@PathParam("symbol") String symbol) throws IOException {
 		if (symbol.equalsIgnoreCase(TEST_SYMBOL)) return getTestQuote(TEST_SYMBOL, TEST_PRICE);
