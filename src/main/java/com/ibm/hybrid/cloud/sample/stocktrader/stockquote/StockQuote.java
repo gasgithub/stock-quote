@@ -144,7 +144,7 @@ public class StockQuote extends Application {
 	public StockQuote() {
 		super();
 		System.out.println("in StockQuote constr");
-		varConstr =" Initialized in constr";
+		varConstr = System.getenv("REDIS_URL");
 		try {
 			//The following variable should be set in a Kubernetes secret, and
 			//made available to the app via a stanza in the deployment yaml
