@@ -21,6 +21,7 @@ import com.ibm.hybrid.cloud.sample.stocktrader.stockquote.client.IEXClient;
 import com.ibm.hybrid.cloud.sample.stocktrader.stockquote.json.Quote;
 
 import io.quarkus.runtime.Startup;
+import io.quarkus.runtime.StartupEvent;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -53,6 +54,7 @@ import javax.inject.Inject;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 
 //mpRestClient 1.0
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -68,7 +70,7 @@ import redis.clients.jedis.JedisPool;
 @ApplicationPath("/")
 @Path("/stock-quote") 
 //###Quarkus @Path("/")
-@Startup
+//@Startup
 @ApplicationScoped
 /** This version of StockQuote talks to API Connect (which talks to api.iextrading.com) */
 public class StockQuote extends Application {
@@ -134,6 +136,13 @@ public class StockQuote extends Application {
 			t.printStackTrace();
 		}
 	}
+	
+    void onStart(@Observes StartupEvent ev) {               
+    	System.out.println("The application is starting...");
+    	varConst = "onStart: " + System.getenv("REDIS_URL");
+    }
+
+	
 	@PostConstruct
 	private void init() {
 		System.out.println("in init");
