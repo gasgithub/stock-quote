@@ -20,6 +20,8 @@ import com.ibm.hybrid.cloud.sample.stocktrader.stockquote.client.APIConnectClien
 import com.ibm.hybrid.cloud.sample.stocktrader.stockquote.client.IEXClient;
 import com.ibm.hybrid.cloud.sample.stocktrader.stockquote.json.Quote;
 
+import io.quarkus.runtime.Startup;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -66,14 +68,15 @@ import redis.clients.jedis.JedisPool;
 @ApplicationPath("/")
 @Path("/stock-quote") 
 //###Quarkus @Path("/")
+@Startup
 @ApplicationScoped
 /** This version of StockQuote talks to API Connect (which talks to api.iextrading.com) */
 public class StockQuote extends Application {
 	private static Logger logger = Logger.getLogger(StockQuote.class.getName());
 	private static JedisPool jedisPool = null;
 	
-	private static String varStatic = null;
-	private String varConstr = null;
+	private boolean initialized = false;
+	private String varConst = null;
 
 	private static final long MINUTE_IN_MILLISECONDS = 60000;
 	private static final double ERROR       = -1;
@@ -93,7 +96,6 @@ public class StockQuote extends Application {
 	// Override API Connect Client URL if secret is configured to provide URL
 	static {
 		System.out.println("Redis URL in static: " + System.getenv("REDIS_URL"));
-		varStatic = "initialized in static block " + System.getenv("REDIS_URL") + " url";
 		
 		String mpUrlPropName = APIConnectClient.class.getName() + "/mp-rest/url";
 		String urlFromEnv = System.getenv("APIC_URL");
@@ -136,15 +138,36 @@ public class StockQuote extends Application {
 	private void init() {
 		System.out.println("in init");
 		
-		System.out.println("Redis URL: " + System.getenv("REDIS_URL"));
-		varConstr = varConstr + "  post: " + System.getenv("REDIS_URL") + " is null: " + (null == System.getenv("REDIS_URL"));
+//		try {
+//			System.out.println("Redis URL: " + System.getenv("REDIS_URL"));
+//			if (jedisPool == null && System.getenv("REDIS_URL") != null) { //the pool is static; the connections within the pool are obtained as needed
+//				String redis_url = System.getenv("REDIS_URL");
+//				URI jedisURI = new URI(redis_url);
+//				logger.info("Initializing Redis pool using URL: "+redis_url);
+//				jedisPool = new JedisPool(jedisURI);
+//			}
+//
+//			try {
+//				String cache_string = System.getenv("CACHE_INTERVAL");
+//				if (cache_string != null) {
+//					cache_interval = Long.parseLong(cache_string);
+//				}
+//			} catch (Throwable t) {
+//				logger.warning("No cache interval set - defaulting to 60 minutes");
+//			}
+//			formatter = new SimpleDateFormat("yyyy-MM-dd");
+//			logger.info("Initialization complete!");
+//		} catch (Throwable t) {
+//			logException(t);
+//		}
+		
 	}
 	
 
 	public StockQuote() {
 		super();
 		System.out.println("in StockQuote constr");
-		varConstr = System.getenv("REDIS_URL");
+		varConst = System.getenv("REDIS_URL");
 		try {
 			//The following variable should be set in a Kubernetes secret, and
 			//made available to the app via a stanza in the deployment yaml
@@ -234,8 +257,7 @@ public class StockQuote extends Application {
 	/**  Get stock quote from API Connect */
 	public Quote getStockQuote(@PathParam("symbol") String symbol) throws IOException {
 		System.out.println("Redis URL in getStockQuote: " + System.getenv("REDIS_URL"));
-		System.out.println("varStatic: " + varStatic);
-		System.out.println("varConstr: " + varConstr);
+		System.out.println("varConstr: " + varConst);
 		if (symbol.equalsIgnoreCase(TEST_SYMBOL)) return getTestQuote(TEST_SYMBOL, TEST_PRICE);
 		if (symbol.equalsIgnoreCase(SLOW_SYMBOL)) return getSlowQuote();
 		if (symbol.equalsIgnoreCase(FAIL_SYMBOL)) { //to help test Istio retry policies
