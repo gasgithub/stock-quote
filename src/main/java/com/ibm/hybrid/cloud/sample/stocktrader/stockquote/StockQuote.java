@@ -65,6 +65,7 @@ import org.eclipse.microprofile.faulttolerance.Fallback;
 //Jedis (Java for Redis)
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 
 @ApplicationPath("/")
@@ -145,7 +146,13 @@ public class StockQuote extends Application {
 				String redis_url = System.getenv("REDIS_URL");
 				URI jedisURI = new URI(redis_url);
 				logger.info("Initializing Redis pool using URL: "+redis_url);
-				jedisPool = new JedisPool(jedisURI);
+				
+				//### Quarkus - disable jmx in jedis
+				JedisPoolConfig jedisConfiguration = new JedisPoolConfig();
+				jedisConfiguration.setJmxEnabled(false);
+				jedisPool = new JedisPool(jedisConfiguration, jedisURI);
+				
+				// ##jedisPool = new JedisPool(jedisURI);
 			}
 	
 			try {
