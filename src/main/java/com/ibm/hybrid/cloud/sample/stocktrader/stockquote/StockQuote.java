@@ -48,6 +48,7 @@ import javax.ws.rs.Path;
 
 //CDI 1.2
 import javax.inject.Inject;
+import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 
@@ -125,10 +126,17 @@ public class StockQuote extends Application {
 			t.printStackTrace();
 		}
 	}
+	@PostConstruct
+	private void init() {
+		System.out.println("in init");
+		
+		System.out.println("Redis URL: " + System.getenv("REDIS_URL"));
+	}
+	
 
 	public StockQuote() {
 		super();
-
+		System.out.println("in StockQuote constr");
 		try {
 			//The following variable should be set in a Kubernetes secret, and
 			//made available to the app via a stanza in the deployment yaml
