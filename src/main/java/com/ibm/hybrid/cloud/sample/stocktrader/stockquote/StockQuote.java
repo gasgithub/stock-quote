@@ -71,6 +71,9 @@ import redis.clients.jedis.JedisPool;
 public class StockQuote extends Application {
 	private static Logger logger = Logger.getLogger(StockQuote.class.getName());
 	private static JedisPool jedisPool = null;
+	
+	private static String varStatic = null;
+	private String varConstr = null;
 
 	private static final long MINUTE_IN_MILLISECONDS = 60000;
 	private static final double ERROR       = -1;
@@ -89,6 +92,9 @@ public class StockQuote extends Application {
 
 	// Override API Connect Client URL if secret is configured to provide URL
 	static {
+		System.out.println("Redis URL in static: " + System.getenv("REDIS_URL"));
+		varStatic = "initialized in static block";
+		
 		String mpUrlPropName = APIConnectClient.class.getName() + "/mp-rest/url";
 		String urlFromEnv = System.getenv("APIC_URL");
 		if ((urlFromEnv != null) && !urlFromEnv.isEmpty()) {
@@ -131,12 +137,14 @@ public class StockQuote extends Application {
 		System.out.println("in init");
 		
 		System.out.println("Redis URL: " + System.getenv("REDIS_URL"));
+		varConstr = varConstr + " Initialized in post";
 	}
 	
 
 	public StockQuote() {
 		super();
 		System.out.println("in StockQuote constr");
+		varConstr =" Initialized in constr";
 		try {
 			//The following variable should be set in a Kubernetes secret, and
 			//made available to the app via a stanza in the deployment yaml
@@ -226,6 +234,8 @@ public class StockQuote extends Application {
 	/**  Get stock quote from API Connect */
 	public Quote getStockQuote(@PathParam("symbol") String symbol) throws IOException {
 		System.out.println("Redis URL in getStockQuote: " + System.getenv("REDIS_URL"));
+		System.out.println("varStatic: " + varStatic);
+		System.out.println("varConstr: " + varConstr);
 		if (symbol.equalsIgnoreCase(TEST_SYMBOL)) return getTestQuote(TEST_SYMBOL, TEST_PRICE);
 		if (symbol.equalsIgnoreCase(SLOW_SYMBOL)) return getSlowQuote();
 		if (symbol.equalsIgnoreCase(FAIL_SYMBOL)) { //to help test Istio retry policies
