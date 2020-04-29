@@ -64,7 +64,7 @@ import redis.clients.jedis.JedisPool;
 
 @ApplicationPath("/")
 @Path("/stock-quote") 
-//@Path("/")
+//###Quarkus @Path("/")
 @ApplicationScoped
 /** This version of StockQuote talks to API Connect (which talks to api.iextrading.com) */
 public class StockQuote extends Application {
@@ -157,7 +157,7 @@ public class StockQuote extends Application {
 			      - containerPort: 9080
 			    imagePullPolicy: Always
 			*/
-
+			System.out.println("Redis URL: " + System.getenv("REDIS_URL"));
 			if (jedisPool == null && System.getenv("REDIS_URL") != null) { //the pool is static; the connections within the pool are obtained as needed
 				String redis_url = System.getenv("REDIS_URL");
 				URI jedisURI = new URI(redis_url);

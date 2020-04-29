@@ -95,7 +95,11 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        
+       <!-- ### openshift extension --> 
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-openshift</artifactId>
+    </dependency>       
   </dependencies>
   <build>
     <plugins>
