@@ -139,7 +139,28 @@ public class StockQuote extends Application {
 	
     void onStart(@Observes StartupEvent ev) {               
     	System.out.println("The application is starting...");
-    	varConst = "onStart: " + System.getenv("REDIS_URL");
+		System.out.println("Redis URL: " + System.getenv("REDIS_URL"));
+		try {
+			if (jedisPool == null && System.getenv("REDIS_URL") != null) { //the pool is static; the connections within the pool are obtained as needed
+				String redis_url = System.getenv("REDIS_URL");
+				URI jedisURI = new URI(redis_url);
+				logger.info("Initializing Redis pool using URL: "+redis_url);
+				jedisPool = new JedisPool(jedisURI);
+			}
+	
+			try {
+				String cache_string = System.getenv("CACHE_INTERVAL");
+				if (cache_string != null) {
+					cache_interval = Long.parseLong(cache_string);
+				}
+			} catch (Throwable t) {
+				logger.warning("No cache interval set - defaulting to 60 minutes");
+			}
+			formatter = new SimpleDateFormat("yyyy-MM-dd");
+			logger.info("Initialization complete!");
+		} catch (Throwable t) {
+			logException(t);
+		}
     }
 
 	
