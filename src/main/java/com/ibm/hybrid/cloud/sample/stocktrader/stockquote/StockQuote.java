@@ -93,7 +93,7 @@ public class StockQuote extends Application {
 	// Override API Connect Client URL if secret is configured to provide URL
 	static {
 		System.out.println("Redis URL in static: " + System.getenv("REDIS_URL"));
-		varStatic = "initialized in static block";
+		varStatic = "initialized in static block " + System.getenv("REDIS_URL") + " url";
 		
 		String mpUrlPropName = APIConnectClient.class.getName() + "/mp-rest/url";
 		String urlFromEnv = System.getenv("APIC_URL");
@@ -137,7 +137,7 @@ public class StockQuote extends Application {
 		System.out.println("in init");
 		
 		System.out.println("Redis URL: " + System.getenv("REDIS_URL"));
-		varConstr = varConstr + " Initialized in post";
+		varConstr = varConstr + "  post: " + System.getenv("REDIS_URL") + " is null: " + (null == System.getenv("REDIS_URL"));
 	}
 	
 
