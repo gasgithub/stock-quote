@@ -217,6 +217,7 @@ public class StockQuote extends Application {
 	//@RolesAllowed({"StockTrader", "StockViewer"}) //Couldn't get this to work; had to do it through the web.xml instead :(
 	/**  Get stock quote from API Connect */
 	public Quote getStockQuote(@PathParam("symbol") String symbol) throws IOException {
+		System.out.println("Redis URL in getStockQuote: " + System.getenv("REDIS_URL"));
 		if (symbol.equalsIgnoreCase(TEST_SYMBOL)) return getTestQuote(TEST_SYMBOL, TEST_PRICE);
 		if (symbol.equalsIgnoreCase(SLOW_SYMBOL)) return getSlowQuote();
 		if (symbol.equalsIgnoreCase(FAIL_SYMBOL)) { //to help test Istio retry policies
