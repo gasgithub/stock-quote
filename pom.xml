@@ -76,30 +76,24 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-metrics</artifactId>
     </dependency>
-    
-      <dependency>
-      <groupId>redis.clients</groupId>
-      <artifactId>jedis</artifactId>
-      <version>3.1.0</version>
-      <scope>compile</scope>
-  </dependency>
-  <!-- Elytron Security extension -->
     <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-elytron-security-properties-file</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-elytron-security-properties-file</artifactId>
     </dependency>
-  <!-- ### GAS  added for build , replace with quarkus tests later  -->
-          <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-       <!-- ### openshift extension --> 
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-openshift</artifactId>
-    </dependency>       
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-cache</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
