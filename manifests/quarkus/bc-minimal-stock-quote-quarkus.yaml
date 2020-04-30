@@ -1,0 +1,35 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: minimal-stock-quote-quarkus
+  labels:
+    build: minimal-stock-quote-quarkus
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'minimal-stock-quote-quarkus:latest'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'ubi-minimal:latest'
+  source:
+    type: Dockerfile
+    dockerfile: |-
+      FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+      COPY application /application
+      CMD /application
+      EXPOSE 8080
+    images:
+      - from:
+          kind: ImageStreamTag
+          name: 'stock-quote-quarkus:latest'
+        as: null
+        paths:
+          - sourcePath: /usr/src/app/target/application
+            destinationDir: .
+  triggers:
+    - type: ImageChange
+    - type: ConfigChange

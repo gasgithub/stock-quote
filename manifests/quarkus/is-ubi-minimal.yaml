@@ -1,0 +1,14 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: ubi-minimal
+  labels:
+    build: minimal-stock-quote-quarkus
+spec:
+  tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/ubi8/ubi-minimal
+      importPolicy:
+        scheduled: true

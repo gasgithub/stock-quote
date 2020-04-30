@@ -1,0 +1,61 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"minimal-stock-quote-quarkus:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"minimal-stock-quote-quarkus\")].image"}]
+  name: minimal-stock-quote-quarkus
+  labels:
+    app: minimal-stock-quote-quarkus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minimal-stock-quote-quarkus
+  template:
+    metadata:
+      labels:
+        app: minimal-stock-quote-quarkus
+        deploymentconfig: minimal-stock-quote-quarkus
+    spec:
+      containers:
+        - name: minimal-stock-quote-quarkus
+          image: minimal-stock-quote-quarkus
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: redis.url
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: minimal-stock-quote-quarkus
+  labels:
+    app: minimal-stock-quote-quarkus
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: minimal-stock-quote-quarkus
+    deploymentconfig: minimal-stock-quote-quarkus
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: minimal-stock-quote-quarkus
+  labels:
+    app: minimal-stock-quote-quarkus
+spec:
+  to:
+    kind: Service
+    name: minimal-stock-quote-quarkus
+  port:
+    targetPort: 8080-tcp
