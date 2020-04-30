@@ -1,7 +1,7 @@
 # Summarizes migration issues with StockQuote to Quarkus 
 Issue found
 
-##Constuctor/@PostConstruct mehtods ran at build time 
+## Constuctor/@PostConstruct mehtods ran at build time 
 Quarkus when run in native mode initializes at compile to native time, not on startup 
 This doesn't work in the constructor:
 
@@ -14,7 +14,7 @@ Constructor replaced with  method
 
 ```
 
-##Quarkus doesnt support JMX - default Jedis pool configuration not works
+## Quarkus doesnt support JMX - default Jedis pool configuration not works
 Default `jedisPool = new JedisPool(jedisURI);` causes NullPointer.
 Changed to disable jmx:
 
@@ -24,7 +24,7 @@ JedisPoolConfig jedisConfiguration = new JedisPoolConfig();
 				jedisPool = new JedisPool(jedisConfiguration, jedisURI);
 ```
 
-##Problem in the commons pool implementation
+## Problem in the commons pool implementation
 App fails to start with ClassNotFoundException
 ```
 2020-04-29 17:35:37,724 INFO  [com.ibm.hyb.clo.sam.sto.sto.StockQuote] (main) java.lang.IllegalArgumentException: Unable to create org.apache.commons.pool2.impl.EvictionPolicy instance of type org.apache.commons.pool2.impl.DefaultEvictionPolicy
