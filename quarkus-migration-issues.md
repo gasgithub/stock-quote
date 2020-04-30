@@ -9,7 +9,8 @@ This doesn't work in the constructor:
 
 Constructor replaced with  method
 
-```void onStart(@Observes StartupEvent ev) {
+```
+   void onStart(@Observes StartupEvent ev) {
    .... constuctor code here
 
 ```
