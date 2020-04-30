@@ -19,7 +19,6 @@ package com.ibm.hybrid.cloud.sample.stocktrader.stockquote;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 //Logging (JSR 47)
@@ -45,8 +44,10 @@ import com.ibm.hybrid.cloud.sample.stocktrader.stockquote.json.Quote;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 //mpRestClient 1.0
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.resteasy.annotations.cache.Cache;
 
 import io.quarkus.cache.CacheResult;
+import io.quarkus.cache.runtime.caffeine.CaffeineCache;
 
 
 
@@ -120,7 +121,6 @@ public class StockQuote extends Application {
 		}
 	}
 	
-
 	@GET
 	@Path("/")
 	@Produces("application/json")
@@ -128,8 +128,13 @@ public class StockQuote extends Application {
 	/**  Get all stock quotes in Redis.  This is a read-only operation that just returns what's already there, without any refreshing */
 	public Quote[] getAllCachedQuotes() {
 		Quote[] quoteArray = new Quote[] {};
+		
+		// private CacheManager cacheManager;
+		// CaffeineCache caffeineCache = 
+		// com.github.benmanes.caffeine.cache.CacheWriter.
+		// return nativeCache.asMap().keySet();
 	
-		return quoteArray;
+	return quoteArray;
 	}
 
 	@GET
