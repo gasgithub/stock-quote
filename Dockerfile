@@ -2,11 +2,13 @@ FROM quay.io/quarkus/centos-quarkus-maven:19.3.1-java11
 COPY src /usr/src/app/src
 COPY pom.xml /usr/src/app
 USER root
-RUN chown -R quarkus /usr/src/app
+RUN chown -R quarkus /usr/src/app \
+    && chmod -R "a+rwx" /home/quarkus \
+    && chown -R 1001:root /home/quarkus
 USER quarkus
 RUN mvn -f /usr/src/app/pom.xml -Pnative clean package
 RUN mv /usr/src/app/target/*-runner /usr/src/app/target/application
 # added to run image directly without minifing
-CMD /usr/src/app/target/application
+CMD ["/usr/src/app/target/application", "-Dquarkus.http.host=0.0.0.0"]
 # for java build
 #RUN mvn -f /usr/src/app/pom.xml clean package   
