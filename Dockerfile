@@ -3,9 +3,10 @@ COPY src /usr/src/app/src
 COPY pom.xml /usr/src/app
 USER root
 RUN chown -R quarkus /usr/src/app
-RUN chown -R quarkus /home/quarkus
 USER quarkus
 RUN mvn -f /usr/src/app/pom.xml -Pnative clean package
 RUN mv /usr/src/app/target/*-runner /usr/src/app/target/application
+# added to run image directly without minifing
+CMD /usr/src/app/target/application
 # for java build
 #RUN mvn -f /usr/src/app/pom.xml clean package   
