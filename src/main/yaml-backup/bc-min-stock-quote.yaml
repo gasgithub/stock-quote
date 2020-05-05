@@ -1,0 +1,67 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: minimal-stock-quote-native
+  namespace: quarkus-test-s2i
+  selfLink: >-
+    /apis/build.openshift.io/v1/namespaces/quarkus-test-s2i/buildconfigs/minimal-stock-quote-native
+  uid: 80c497eb-e899-411d-92e8-39900a95bb05
+  resourceVersion: '1793124'
+  creationTimestamp: '2020-04-20T16:14:03Z'
+  labels:
+    build: minimal-stock-quote-native
+  annotations:
+    openshift.io/generated-by: OpenShiftNewBuild
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'minimal-stock-quote-native:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'ubi-minimal:latest'
+  postCommit: {}
+  source:
+    type: Dockerfile
+    dockerfile: >-
+      FROM registry.access.redhat.com/ubi8/ubi-minimal:latest\nCOPY application
+      /application\nCMD /application\nEXPOSE 8080
+    images:
+      - from:
+          kind: ImageStreamTag
+          namespace: quarkus-test-s2i
+          name: 'stock-quote-native-s2i:latest'
+        as: null
+        paths:
+          - sourcePath: /home/quarkus/application
+            destinationDir: .
+  triggers:
+    - type: GitHub
+      github:
+        secret: 57M6NK7AVSk2VswXQlRK
+    - type: Generic
+      generic:
+        secret: n7e1Dn191HxJzyZLWMJ9
+    - type: ImageChange
+      imageChange:
+        lastTriggeredImageID: >-
+          image-registry.openshift-image-registry.svc:5000/quarkus-test-s2i/stock-quote-native-s2i@sha256:c68592f63111b2a11468a19b03b93a55c2b99112fdef736647c7564e0e7617ed
+        from:
+          kind: ImageStreamTag
+          namespace: quarkus-test-s2i
+          name: 'stock-quote-native-s2i:latest'
+    - type: ConfigChange
+    - type: ImageChange
+      imageChange:
+        lastTriggeredImageID: >-
+          registry.access.redhat.com/ubi8/ubi-minimal@sha256:4e6755fbb3af9502f60d7f0da12bad68217db3f92c2114f8867b76ac4e1d8bed
+  runPolicy: Serial
+status:
+  lastVersion: 4

@@ -33,3 +33,8 @@ spec:
   triggers:
     - type: ImageChange
     - type: ConfigChange
+    - type: ImageChange    
+      imageChange:
+        from:
+          kind: "ImageStreamTag"
+          name: "stock-quote-quarkus:latest"

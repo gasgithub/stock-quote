@@ -71,13 +71,12 @@ import redis.clients.jedis.JedisPoolConfig;
 @ApplicationPath("/")
 @Path("/stock-quote") 
 //###Quarkus @Path("/")
-//@Startup
 @ApplicationScoped
 /** This version of StockQuote talks to API Connect (which talks to api.iextrading.com) */
 public class StockQuote extends Application {
 	private static Logger logger = Logger.getLogger(StockQuote.class.getName());
 	
-	//private static JedisPool jedisPool = null;
+	//###Quarkus private static JedisPool jedisPool = null;
 	private static Jedis jedisPool = null;
 	
 	private String varConst = null;
@@ -175,40 +174,9 @@ public class StockQuote extends Application {
     }
 
 	
-	@PostConstruct
-	private void init() {
-		System.out.println("in init");
-		
-//		try {
-//			System.out.println("Redis URL: " + System.getenv("REDIS_URL"));
-//			if (jedisPool == null && System.getenv("REDIS_URL") != null) { //the pool is static; the connections within the pool are obtained as needed
-//				String redis_url = System.getenv("REDIS_URL");
-//				URI jedisURI = new URI(redis_url);
-//				logger.info("Initializing Redis pool using URL: "+redis_url);
-//				jedisPool = new JedisPool(jedisURI);
-//			}
-//
-//			try {
-//				String cache_string = System.getenv("CACHE_INTERVAL");
-//				if (cache_string != null) {
-//					cache_interval = Long.parseLong(cache_string);
-//				}
-//			} catch (Throwable t) {
-//				logger.warning("No cache interval set - defaulting to 60 minutes");
-//			}
-//			formatter = new SimpleDateFormat("yyyy-MM-dd");
-//			logger.info("Initialization complete!");
-//		} catch (Throwable t) {
-//			logException(t);
-//		}
-		
-	}
-	
-
 	public StockQuote() {
 		super();
-		System.out.println("in StockQuote constr");
-		varConst = System.getenv("REDIS_URL");
+
 		try {
 			//The following variable should be set in a Kubernetes secret, and
 			//made available to the app via a stanza in the deployment yaml
@@ -238,6 +206,8 @@ public class StockQuote extends Application {
 			    imagePullPolicy: Always
 			*/
 			System.out.println("Redis URL: " + System.getenv("REDIS_URL"));
+			varConst = System.getenv("REDIS_URL");
+			
 			if (jedisPool == null && System.getenv("REDIS_URL") != null) { //the pool is static; the connections within the pool are obtained as needed
 				String redis_url = System.getenv("REDIS_URL");
 				URI jedisURI = new URI(redis_url);
@@ -270,7 +240,7 @@ public class StockQuote extends Application {
 		ArrayList<Quote> quotes = new ArrayList<Quote>();
 		Jedis jedis = null;
 		if (jedisPool != null) try {
-			jedis =  new Jedis(jedisURI);//jedisPool;//###.getResource(); //Get a connection from the pool
+			jedis =  new Jedis(jedisURI);//###Quarkus jedisPool.getResource(); //Get a connection from the pool
 
 			Set<String> keys = jedis.keys("*");
 			Iterator<String> iter = keys.iterator();
@@ -313,7 +283,7 @@ public class StockQuote extends Application {
 		if (jedisPool != null) {
 			try {
 		
-			Jedis jedis = new Jedis(jedisURI);//jedisPool; //###.getResource(); //Get a connection from the pool
+			Jedis jedis = new Jedis(jedisURI);//###Quarkus jedisPool.getResource(); //Get a connection from the pool
 			if (jedis==null) logger.warning("Unable to get connection to Redis from pool");
 
 			logger.info("Getting "+symbol+" from Redis");
