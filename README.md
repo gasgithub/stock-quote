@@ -14,8 +14,6 @@
    limitations under the License.
 -->
 
-Hello test3!
-
 The *stock-quote* microservice gets the price of a specified stock.  It hits an API in **API Connect**,
 which drives a call to `https://cloud.iexapis.com/stable/stock/{symbol}/quote` to get the actual data,
 then mediates the structure of the returned JSON as described below.  Note that an API key needs to be
@@ -35,28 +33,9 @@ usual, then adds it to **Redis** so it's there for next time.
 
 The *Java for Redis*, or **Jedis**, library is used for communicating with **Redis**.
 
- 
- ### Build and Deploy to ICP
-To build `stock-quote` clone this repo and run:
-```bash
-mvn package
-docker build -t stock-quote:latest -t <ICP_CLUSTER>.icp:8500/stock-trader/stock-quote:latest .
-docker tag stock-quote:latest <ICP_CLUSTER>.icp:8500/stock-trader/stock-quote:latest
-docker push <ICP_CLUSTER>.icp:8500/stock-trader/stock-quote:latest
-```
+This branch describes how the *stock-quote* can be deployed using Quarkus.
 
-Use WebSphere Liberty helm chart to deploy Stock Quote microservice to ICP:
-```bash
-helm repo add ibm-charts https://raw.githubusercontent.com/IBM/charts/master/repo/stable/
-helm install ibm-charts/ibm-websphere-liberty -f <VALUES_YAML> -n <RELEASE_NAME> --tls
-```
+[Here](quarkus-build.md) you can find instructions how to build application locally. 
+You can also build and deploy application directly on OpenShift - see detailed instructions - [deploying to OpenShift](quarkus-openshift.md)
 
-In practice this means you'll run something like:
-```bash
-docker build -t stock-quote:latest -t mycluster.icp:8500/stock-trader/stock-quote:latest .
-docker tag stock-quote:latest mycluster.icp:8500/stock-trader/stock-quote:latest
-docker push mycluster.icp:8500/stock-trader/stock-quote:latest
 
-helm repo add ibm-charts https://raw.githubusercontent.com/IBM/charts/master/repo/stable/
-helm install ibm-charts/ibm-websphere-liberty -f manifests/stock-quote-values.yaml -n stock-quote --namespace stock-trader --tls
-```
