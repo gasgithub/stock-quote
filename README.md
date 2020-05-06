@@ -36,6 +36,7 @@ The *Java for Redis*, or **Jedis**, library is used for communicating with **Red
 This branch describes how the *stock-quote* can be deployed using Quarkus.
 
 [Here](quarkus-build.md) you can find instructions how to build application locally. 
-You can also build and deploy application directly on OpenShift - see detailed instructions - [deploying to OpenShift](quarkus-openshift.md)
+You can also build and deploy application directly on OpenShift - see detailed instructions - [deploying to OpenShift](quarkus-openshift.md). 
+Details about configuring service to use JWT authorization are described [here](quarkus-jwt.md)
 
 
