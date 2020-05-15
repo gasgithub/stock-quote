@@ -73,11 +73,11 @@ If you are doing build form Docker Desktop for Windows, first go to settings and
 
 Being in the stock-quote directory issue
 
-`docker build -f src/main/docker/Dockerfile.multistage -t quarkus-stock-quote .`
+`docker build -f src/main/docker/Dockerfile.multistage -t quarkus-stock-quote-native .`
 
 After a successful build (it takes a while), start the image:
 
-`docker run -i --rm -p 8080:8080 quarkus-stock-quote`
+`docker run -i --rm -p 8080:8080 quarkus-stock-quote-native`
 
 Access with the browser http://localhost:8080/stock-quote/IBM
 

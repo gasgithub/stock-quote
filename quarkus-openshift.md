@@ -84,7 +84,17 @@ To deploy application issue:
 
 `oc apply -f depl-minimal-stock-quote-quarkus.yaml`
 
-Application can be validated using url similar to:
+We could easily integrate our build config with Github via web hook, that would automatically build and deploy new application whenever it is change, however for now, you have to trigger build manually via console or command line:
+
+`oc start-build stock-quote-quarkus` 
+
+Build is also automatically triggered whenever one of source image used in image streams is changed, for example due to security updates.
+
+Check if your build is successful
+Our service is accessible via url similar to: http://minimal-stock-quote-quarkus-NAMESPACE.CLUSTER-URL/stock-quote/IBM however we will not be able to test it directly as it is protected via JWT authorization. For manual testing, you can use file based security configuration and disable JWT.
+Next step would be to create serverless service out of our application, but it is a theme for another story….
+
+Service is accessible via url similar to:
 http://minimal-stock-quote-quarkus-NAMESPACE.CLUSTER-URL/stock-quote/IBM
 
 You can find your URL using the following command: 

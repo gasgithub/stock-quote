@@ -21,14 +21,15 @@ Changed to disable jmx:
 
 ```
 JedisPoolConfig jedisConfiguration = new JedisPoolConfig();
-				jedisConfiguration.setJmxEnabled(false);
-				jedisPool = new JedisPool(jedisConfiguration, jedisURI);
+jedisConfiguration.setJmxEnabled(false);
+jedisPool = new JedisPool(jedisConfiguration, jedisURI);
 ```
 
 ## Problem in the commons pool implementation
 App fails to start with ClassNotFoundException
 ```
-2020-04-29 17:35:37,724 INFO  [com.ibm.hyb.clo.sam.sto.sto.StockQuote] (main) java.lang.IllegalArgumentException: Unable to create org.apache.commons.pool2.impl.EvictionPolicy instance of type org.apache.commons.pool2.impl.DefaultEvictionPolicy
+2020-05-14 17:35:37,724 INFO  [com.ibm.hyb.clo.sam.sto.sto.StockQuote] (main) java.lang.IllegalArgumentException: 
+Unable to create org.apache.commons.pool2.impl.EvictionPolicy instance of type org.apache.commons.pool2.impl.DefaultEvictionPolicy
 	at org.apache.commons.pool2.impl.BaseGenericObjectPool.setEvictionPolicyClassName(BaseGenericObjectPool.java:662)
 	at org.apache.commons.pool2.impl.BaseGenericObjectPool.setEvictionPolicyClassName(BaseGenericObjectPool.java:687)
 	at org.apache.commons.pool2.impl.BaseGenericObjectPool.setConfig(BaseGenericObjectPool.java:235)

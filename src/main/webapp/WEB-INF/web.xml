@@ -18,7 +18,10 @@
 		<display-name>Stock Quote Security</display-name>
 		<web-resource-collection>
 			<web-resource-name>Stock Quotes</web-resource-name>
-			<description>Applies to all paths under the context root (this service specifies which stock to quote based on a path param)</description>
+			<description>
+			  Applies to all paths under the context root 
+			  (this service specifies which stock to quote based on a path param)
+			</description>
 			<url-pattern>/*</url-pattern>
 			<http-method>GET</http-method>
 		</web-resource-collection>
