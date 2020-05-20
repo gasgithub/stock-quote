@@ -1,0 +1,10 @@
+apiVersion: serving.knative.dev/v1
+kind: Route
+metadata:
+  name: stock-quote-knative
+  namespace: quarkust-test-native
+spec:
+  traffic:
+    - configurationName: stock-quote-knative
+      latestRevision: true
+      percent: 100
