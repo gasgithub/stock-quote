@@ -1,0 +1,28 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: stock-quote-knative
+  namespace: quarkust-test-native
+spec:
+  template:
+    spec:
+      containerConcurrency: 0
+      containers:
+        - image: >-
+            image-registry.openshift-image-registry.svc:5000/quarkus-test-manual/minimal-stock-quote-native-manual
+          name: user-container
+          readinessProbe:
+            successThreshold: 1
+            tcpSocket:
+              port: 0
+          resources:
+            limits:
+              cpu: '1'
+              memory: 200M
+            requests:
+              cpu: 400m
+              memory: 100M
+      timeoutSeconds: 300
+  traffic:
+    - latestRevision: true
+      percent: 100
