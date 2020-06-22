@@ -30,6 +30,21 @@ spec:
                 secretKeyRef:
                   name: redis
                   key: redis.url
+            - name: MP_JWT_VERIFY_PUBLICKEY
+              valueFrom:
+                configMapKeyRef:
+                  name: jwt-config
+                  key: jwt-ca.crt
+            - name: MP_JWT_VERIFY_ISSUER
+              valueFrom:
+                configMapKeyRef:
+                  name: jwt-config
+                  key: mp.jwt.verify.issuer
+            - name: SMALLRYE_JWT_VERIFY_AUD
+              valueFrom:
+                configMapKeyRef:
+                  name: jwt-config
+                  key: smallrye.jwt.verify.aud                        
 ---
 kind: Service
 apiVersion: v1
