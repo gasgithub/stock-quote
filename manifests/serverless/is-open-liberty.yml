@@ -1,0 +1,15 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: open-liberty
+  namespace: test-knative
+  labels:
+    app: open-liberty
+spec:
+  tags:
+    - name: kernel-java11-openj9-ubi
+      from:
+        kind: DockerImage
+        name: 'docker.io/openliberty/open-liberty:kernel-java11-openj9-ubi'
+      importPolicy:
+        scheduled: true
