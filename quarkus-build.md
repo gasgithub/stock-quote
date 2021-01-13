@@ -79,5 +79,7 @@ After a successful build (it takes a while), start the image:
 
 `docker run -i --rm -p 8080:8080 quarkus-stock-quote-native`
 
+`docker run -d  -p 8080:8080 quarkus-stock-quote-native:basic`
+
 Access with the browser http://localhost:8080/stock-quote/IBM
 
