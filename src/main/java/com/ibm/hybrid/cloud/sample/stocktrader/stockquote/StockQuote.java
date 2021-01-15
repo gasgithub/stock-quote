@@ -16,9 +16,6 @@
 
 package com.ibm.hybrid.cloud.sample.stocktrader.stockquote;
 
-//import io.quarkus.runtime.Startup;
-//import io.quarkus.runtime.StartupEvent;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -70,7 +67,6 @@ public class StockQuote extends Application {
 	private static Logger logger = Logger.getLogger(StockQuote.class.getName());
 	
 	private static JedisPool jedisPool = null;
-	//private static Jedis jedisPool = null;
 	
 	private URI jedisURI = null;
 	private boolean initialized = false;
@@ -197,7 +193,7 @@ public class StockQuote extends Application {
 		ArrayList<Quote> quotes = new ArrayList<Quote>();
 		Jedis jedis = null;
 		if (jedisPool != null) try {
-			jedis =  jedisPool.getResource(); //Get a connection from the pool  //new Jedis(jedisURI);//###Quarkus 
+			jedis =  jedisPool.getResource(); 
 			
 
 			Set<String> keys = jedis.keys("*");
@@ -240,7 +236,7 @@ public class StockQuote extends Application {
 		if (jedisPool != null) {
 			try {
 		
-			Jedis jedis = jedisPool.getResource(); //Get a connection from the pool  new Jedis(jedisURI);//###Quarkus 
+			Jedis jedis = jedisPool.getResource(); 
 			if (jedis==null) logger.warning("Unable to get connection to Redis from pool");
 
 			logger.info("Getting "+symbol+" from Redis");
